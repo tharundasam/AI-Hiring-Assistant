@@ -13,12 +13,14 @@ torchaudio
 
 transformers
 sentence-transformers
+psycopg2-binary
 
 faiss-cpu
 
 scikit-learn
 
 pdfplumber
+fpdf2
 
 python-docx
 

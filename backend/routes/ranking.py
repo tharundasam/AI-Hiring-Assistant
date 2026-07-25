@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 import os
-
+from database.db import SessionLocal
+from models.resume import Resume
 from services.resume_parser import ResumeParser
 from services.embedding import EmbeddingService
 from services.similarity import SimilarityEngine
@@ -98,6 +99,36 @@ def rank_resumes():
             ats["matched_skills"],
             ats["missing_skills"]
         )
+
+        db = SessionLocal()
+
+        candidate = db.query(Resume).filter(
+            Resume.filename == filename
+        ).first()
+
+        if candidate:
+
+            candidate.overall_score = ats["overall_score"]
+
+            candidate.semantic_score = semantic
+
+            candidate.summary = summary
+
+            candidate.matched_skills = ", ".join(
+                ats["matched_skills"]
+            )
+
+            candidate.missing_skills = ", ".join(
+                ats["missing_skills"]
+            )
+
+            candidate.interview_questions = "\n".join(
+                questions
+            )
+
+            db.commit()
+
+        db.close()
  
         results.append({
             "candidate": filename,
