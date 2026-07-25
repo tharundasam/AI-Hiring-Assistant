@@ -22,6 +22,12 @@ app = FastAPI(
     description="AI Resume Screening System"
 )
 
+import os
+
+os.makedirs("uploads", exist_ok=True)
+os.makedirs("uploads/jobs", exist_ok=True)
+os.makedirs("outputs", exist_ok=True)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
